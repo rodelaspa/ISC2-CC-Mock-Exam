@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix ISC2 Certified in Cybersecurity (CC) Mock Exam \u0026 Study Hub",
+  "description": "Comprehensive ISC2 Certified in Cybersecurity (CC) mock exam simulator with per-item timers, instant explanations, official 70% passing standard tracker, and domain mastery analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

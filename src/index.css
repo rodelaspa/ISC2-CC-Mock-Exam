@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Default: Relaxing Eye Comfort Dark Mode (Midnight Navy & Slate) */
+  --background: #090e1a;
+  --foreground: #f8fafc;
+  --card: #121c2e;
+  --card-foreground: #f8fafc;
+  --popover: #121c2e;
+  --popover-foreground: #f8fafc;
+  --primary: #14b8a6;
+  --primary-foreground: #02201d;
+  --secondary: #19263e;
+  --secondary-foreground: #f8fafc;
+  --muted: #19263e;
+  --muted-foreground: #94a3b8;
+  --accent: #243550;
+  --accent-foreground: #f8fafc;
+  --destructive: #f43f5e;
+  --destructive-foreground: #ffffff;
+  --border: #263852;
+  --input: #263852;
+  --ring: #14b8a6;
+}
+
+html.dark {
+  /* Explicit Dark Theme */
+  --background: #090e1a;
+  --foreground: #f8fafc;
+  --card: #121c2e;
+  --card-foreground: #f8fafc;
+  --popover: #121c2e;
+  --popover-foreground: #f8fafc;
+  --primary: #14b8a6;
+  --primary-foreground: #02201d;
+  --secondary: #19263e;
+  --secondary-foreground: #f8fafc;
+  --muted: #19263e;
+  --muted-foreground: #94a3b8;
+  --accent: #243550;
+  --accent-foreground: #f8fafc;
+  --destructive: #f43f5e;
+  --destructive-foreground: #ffffff;
+  --border: #263852;
+  --input: #263852;
+  --ring: #14b8a6;
+}
+
+html.light {
+  /* Daylight Comfort: Soft Slate-100 background, pure white cards, crisp dark text, 0 glare */
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #0d9488;
+  --primary-foreground: #ffffff;
+  --secondary: #f8fafc;
+  --secondary-foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #475569;
+  --accent: #e2e8f0;
+  --accent-foreground: #0f172a;
+  --destructive: #e11d48;
+  --destructive-foreground: #ffffff;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #0d9488;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Preserve natural high-contrast dark values for slate tokens */
+  --color-slate-950: #020617;
+  --color-slate-925: #070d19;
+  --color-slate-900: #0f172a;
+  --color-slate-850: #17223b;
+  --color-slate-800: #1e293b;
+  --color-slate-750: #283548;
+  --color-teal-accent: #14b8a6;
+  --color-teal-deep: #0f766e;
+  --color-amber-gold: #f59e0b;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(15px, 0.95rem + 0.15vw, 17px);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  /* Large Font Comfort Mode */
+  html.font-comfort-large {
+    font-size: clamp(17px, 1.08rem + 0.22vw, 19.5px);
+  }
+  html.font-comfort-large .text-\[10px\] {
+    font-size: 0.72rem;
+  }
+  html.font-comfort-large .text-\[11px\] {
+    font-size: 0.78rem;
+  }
+  html.font-comfort-large .text-\[12px\] {
+    font-size: 0.85rem;
+  }
+  html.font-comfort-large .text-\[16px\] {
+    font-size: 1.08rem;
+  }
+  html.font-comfort-large .text-\[18px\] {
+    font-size: 1.2rem;
+    line-height: 1.65rem;
+  }
+
+  /* Extra Large Accessible Font Mode */
+  html.font-comfort-xlarge {
+    font-size: clamp(19px, 1.22rem + 0.3vw, 22px);
+  }
+  html.font-comfort-xlarge .text-\[10px\] {
+    font-size: 0.78rem;
+  }
+  html.font-comfort-xlarge .text-\[11px\] {
+    font-size: 0.84rem;
+  }
+  html.font-comfort-xlarge .text-\[12px\] {
+    font-size: 0.92rem;
+  }
+  html.font-comfort-xlarge .text-\[16px\] {
+    font-size: 1.15rem;
+  }
+  html.font-comfort-xlarge .text-\[18px\] {
+    font-size: 1.32rem;
+    line-height: 1.85rem;
+  }
+
+  /* Accessible focus indicators for keyboard navigation */
+  *:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Tabular figures for timers, scores, and ports to prevent layout jitter */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Custom subtle scrollbars for touch & desktop */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* 44px Minimum Touch Target Constraint */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 3D Flashcard Flip Animations */
+.perspective-1000 {
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
