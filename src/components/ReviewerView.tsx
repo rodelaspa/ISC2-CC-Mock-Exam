@@ -81,6 +81,16 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
     { term: 'IaaS / PaaS / SaaS / CASB', domain: 'D4', full: 'Infrastructure / Platform / Software as a Service / Cloud Access Security Broker', note: 'Customer always owns Data & IAM in all cloud models; CASB enforces cloud policy & stops Shadow IT.' },
     { term: 'SIEM / SOAR / EDR', domain: 'D5', full: 'Security Information & Event Mgmt / Security Orchestration & Response / Endpoint Detection', note: 'SIEM aggregates & correlates logs (needs NTP); SOAR automates playbooks; EDR monitors endpoints.' },
     { term: 'DLP / PKI / CA / OCSP', domain: 'D5', full: 'Data Loss Prevention / Public Key Infrastructure / Certificate Authority / Online Cert Status', note: 'DLP stops data exfiltration; CA issues X.509 certificates; CRL/OCSP check certificate revocation.' },
+    { term: 'NIST CSF / ISO 27001 / SOC 2', domain: 'D1', full: 'NIST Cybersecurity Framework 2.0 / ISO/IEC 27001 ISMS / System & Organization Controls 2', note: 'CSF 2.0 = Govern, Identify, Protect, Detect, Respond, Recover; SOC 2 Type II = 6–12 mo effectiveness.' },
+    { term: 'GRC / KPI / KRI', domain: 'D2', full: 'Governance, Risk & Compliance / Key Performance Indicator / Key Risk Indicator', note: 'GRC aligns security with business; KPI measures control performance; KRI warns of rising risk exposure.' },
+    { term: 'FIDO2 / WebAuthn / Kerberos', domain: 'D3', full: 'Fast Identity Online 2 / Web Authentication / Ticket-Based Directory Authentication', note: 'FIDO2 hardware security keys provide phishing-resistant MFA; Kerberos (Port 88) uses KDC tickets.' },
+    { term: 'PE / PA / PEP (Zero Trust)', domain: 'D4', full: 'Policy Engine / Policy Administrator / Policy Enforcement Point (NIST SP 800-207)', note: 'Zero Trust ("Never Trust, Always Verify"): PE decides, PA issues session token, PEP enforces inline.' },
+    { term: 'ICS / SCADA / OT / IoT', domain: 'D4', full: 'Industrial Control Systems / Supervisory Control & Data Acquisition / Operational Tech', note: 'Critical infrastructure controllers prioritizing safety/uptime; protect via Air-Gap / Segmentation.' },
+    { term: 'SQLi / XSS / CSRF', domain: 'D4', full: 'SQL Injection / Cross-Site Scripting / Cross-Site Request Forgery', note: 'SQLi targets backend DB (use Prepared Statements); XSS injects script in browser; WAF filters Layer 7.' },
+    { term: 'PQC / AES / RSA / ECC', domain: 'D5', full: 'Post-Quantum Cryptography / Advanced Encryption Standard / Rivest-Shamir-Adleman / Elliptic Curve', note: 'Quantum breaks Asymmetric RSA/ECC (migrate to NIST PQC); Symmetric AES-256 & SHA-256 remain resilient.' },
+    { term: 'MITRE ATT&CK / IoC / IoA', domain: 'D5', full: 'Adversarial Tactics, Techniques & Common Knowledge / Indicator of Compromise / Attack', note: 'ATT&CK maps adversary TTPs; IoC = static forensic artifact (hash/IP); IoA = live behavioral sequence.' },
+    { term: 'EOL / EOS / CMDB', domain: 'D5', full: 'End-of-Life / End-of-Support (End-of-Service-Life) / Configuration Management Database', note: 'EOL = vendor stops selling; EOS = vendor stops patching (isolate/decommission); CMDB tracks asset baselines.' },
+    { term: 'SAST / DAST / CVE / CVSS', domain: 'D5', full: 'Static / Dynamic Application Security Testing / Common Vulnerabilities / Scoring System', note: 'SAST scans static source code (White-Box); DAST tests running app externally (Black-Box).' },
   ];
 
   const filteredPorts = portList.filter(
@@ -323,6 +333,11 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                       b: 'Due Care ("Do"): Taking prudent action (patching, MFA, policies) to protect assets.',
                     },
                     {
+                      pair: 'Risk Appetite vs. Risk Tolerance',
+                      a: 'Risk Appetite: Broad strategic risk level executive leadership accepts to achieve goals.',
+                      b: 'Risk Tolerance: Specific measurable variance around that appetite allowed per system/metric.',
+                    },
+                    {
                       pair: 'BCP vs. DRP',
                       a: 'BCP (Business Continuity): Keeps critical BUSINESS processes and operations running.',
                       b: 'DRP (Disaster Recovery): Technical subset that restores IT servers, networks, and data.',
@@ -331,6 +346,11 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                       pair: 'RPO vs. RTO vs. MTD',
                       a: 'RPO (Recovery Point): Max acceptable DATA LOSS in time (dictates backup frequency).',
                       b: 'RTO (Recovery Time): Max time to restore IT system. Must satisfy RTO + WRT ≤ MTD.',
+                    },
+                    {
+                      pair: 'KPI vs. KRI (Domain 2.4)',
+                      a: 'KPI (Key Performance Indicator): Measures how well a control/process meets operational targets.',
+                      b: 'KRI (Key Risk Indicator): Early-warning metric indicating that risk exposure is rising.',
                     },
                     {
                       pair: 'Data Owner vs. Data Custodian',
@@ -373,6 +393,21 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                       b: 'Evil Twin: Attacker-controlled AP cloning the legitimate corporate Wi-Fi SSID to steal credentials.',
                     },
                     {
+                      pair: 'False Positive vs. False Negative (Triage)',
+                      a: 'False Positive: Benign traffic triggers a false alarm (causes SOC analyst Alert Fatigue).',
+                      b: 'False Negative: Real attack occurs with ZERO alert (most dangerous security failure!).',
+                    },
+                    {
+                      pair: 'End-of-Life (EOL) vs. End-of-Support (EOS)',
+                      a: 'EOL: Vendor stops selling/manufacturing the product.',
+                      b: 'EOS / EOSL: Vendor stops providing security patches (must decommission or isolate!).',
+                    },
+                    {
+                      pair: 'SAST vs. DAST (App Security Testing)',
+                      a: 'SAST (White-Box): Scans static source code at rest before compilation.',
+                      b: 'DAST (Black-Box): Tests the running application externally over HTTP/HTTPS.',
+                    },
+                    {
                       pair: 'Virus vs. Worm vs. Trojan',
                       a: 'Virus: Needs a host file and HUMAN click to spread. Trojan: Disguised as a benign app.',
                       b: 'Worm: Self-replicates and propagates AUTOMATICALLY across networks without human action.',
@@ -409,7 +444,7 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">{tx('1.1 CIA Triad & IAAA Security Pillars')}</h2>
+                  <h2 className="text-lg font-bold text-foreground">{tx('1.1 CIA Triad, IAAA, Authenticity & Privacy Principles')}</h2>
                   <p className="text-xs text-muted-foreground">{tx('Core objectives of every security control tested on the exam')}</p>
                 </div>
               </div>
@@ -459,14 +494,15 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
               </div>
             </div>
 
-            {/* IAAA & Non-Repudiation */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-2">
+            {/* IAAA & Non-Repudiation & Privacy */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
               {[
                 { step: '1. Identification', desc: 'Claiming an identity (username, employee ID number, swiping badge).' },
                 { step: '2. Authentication', desc: 'Proving that identity (password, hardware token, biometric scan).' },
                 { step: '3. Authorization', desc: 'Granting or denying specific permissions (Read/Write via ACLs or RBAC).' },
                 { step: '4. Accounting', desc: 'Logging actions in immutable audit trails to enforce accountability.' },
-                { step: '5. Non-Repudiation', desc: 'Sender cannot deny an action (enforced via Asymmetric Digital Signatures + unique accounts).' },
+                { step: '5. Authenticity & Non-Repudiation', desc: 'Authenticity proves genuine origin; Non-Repudiation prevents denying an action (Digital Signatures + unique accounts).' },
+                { step: '6. Privacy (PII, PHI, SPI)', desc: 'Data Minimization & Purpose Limitation: collect/retain only the minimum personal data needed for a stated lawful purpose.' },
               ].map((item, idx) => (
                 <div key={idx} className="p-3.5 rounded-xl bg-background border border-border space-y-1">
                   <span className="text-xs font-bold text-primary block">{tx(item.step)}</span>
@@ -476,12 +512,94 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
             </div>
           </div>
 
-          {/* Section B: ISC2 Code of Ethics (Strict Priority Order) */}
+          {/* Section B: Risk Management & Governance Frameworks */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Risk Management Reference */}
+            <div className="bg-card text-card-foreground border border-border p-6 rounded-3xl shadow-sm space-y-4">
+              <h2 className="text-lg font-bold text-foreground">{tx('1.2 Risk Management Lifecycle & Quantitative Formulas')}</h2>
+              <div className="space-y-2.5 text-xs">
+                <div className="p-3.5 rounded-xl bg-muted/50 border border-border space-y-1">
+                  <span className="font-bold text-foreground block">{tx('Quantitative Equations & Risk Register')}</span>
+                  <p className="font-mono text-primary font-semibold">{tx('SLE = Asset Value (AV) × Exposure Factor (EF %)')}</p>
+                  <p className="font-mono text-teal-600 dark:text-teal-400 font-semibold">{tx('ALE = Single Loss Expectancy (SLE) × ARO')}</p>
+                  <p className="font-mono text-amber-600 dark:text-amber-400 font-semibold">{tx('Safeguard Value = (ALE_prior − ALE_post) − Annual Cost (ACS)')}</p>
+                  <p className="text-[11px] text-muted-foreground pt-1">
+                    {tx('Risk Appetite (strategic board posture) vs. Risk Tolerance (specific variance). Inherent Risk − Controls = Residual Risk (accepted by Senior Management in the Risk Register).')}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="p-3 rounded-xl bg-background border border-border">
+                    <span className="font-bold text-primary block">{tx('1. Risk Mitigation')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Deploying controls (MFA, patching, firewall) to reduce likelihood or impact.')}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-background border border-border">
+                    <span className="font-bold text-primary block">{tx('2. Risk Transfer')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Shifting financial impact via cyber insurance or SLAs (accountability stays internal).')}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-background border border-border">
+                    <span className="font-bold text-primary block">{tx('3. Risk Avoidance')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Stopping the risky business activity or decommissioning the vulnerable service entirely.')}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-background border border-border">
+                    <span className="font-bold text-primary block">{tx('4. Risk Acceptance')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Formally documenting and accepting risk when control cost exceeds potential loss.')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Security Control Categories & Governance Standards */}
+            <div className="bg-card text-card-foreground border border-border p-6 rounded-3xl shadow-sm space-y-4">
+              <h2 className="text-lg font-bold text-foreground">{tx('1.3–1.4 Regulations, Frameworks & Control Matrix')}</h2>
+              <div className="space-y-3 text-xs">
+                <div className="p-3 rounded-xl bg-muted/50 border border-border space-y-1">
+                  <span className="font-bold text-primary block">{tx('Regulations & Frameworks (1.3)')}</span>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    {tx('Laws: GDPR (EU PII), HIPAA (US Healthcare PHI), GLBA (Financial), SOX (Accounting), FISMA (Federal). Standards: PCI-DSS (Credit Card contractual rule), ISO 27001 (Certifiable ISMS) & 27002 (Control guide), NIST CSF 2.0 (Govern, Identify, Protect, Detect, Respond, Recover), SOC 2 Type I (point-in-time) vs Type II (6–12 mo effectiveness).')}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <div className="p-2.5 rounded-xl bg-muted/50 border border-border">
+                    <span className="font-bold text-primary block">{tx('Administrative')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Policies, AUP, training, background checks, hiring/termination, job rotation.')}</span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-muted/50 border border-border">
+                    <span className="font-bold text-primary block">{tx('Technical (Logical)')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Firewalls, encryption, MFA, ACLs, IDS/IPS, antivirus, SIEM.')}</span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-muted/50 border border-border">
+                    <span className="font-bold text-primary block">{tx('Physical')}</span>
+                    <span className="text-[11px] text-muted-foreground">{tx('Fences, bollards, locks, mantraps, guards, badges, CCTV, fire suppression.')}</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {[
+                    { type: 'Preventive', desc: 'Stops attack BEFORE it happens (IPS, MFA, Firewall, Mantrap).' },
+                    { type: 'Detective', desc: 'Discovers event DURING/AFTER (IDS, SIEM logs, CCTV, Motion sensor).' },
+                    { type: 'Corrective / Recovery', desc: 'Corrective fixes/quarantines; Recovery restores operations (Backups, DR failover).' },
+                    { type: 'Deterrent', desc: 'Discourages attackers (Warning signs, Login banners, Lighting).' },
+                    { type: 'Compensating', desc: 'Alternative control when primary is infeasible (VLAN isolation for legacy OS).' },
+                    { type: 'Directive', desc: 'Mandates expected behavior (Policies, Escape route signs).' },
+                  ].map((c, idx) => (
+                    <div key={idx} className="p-2.5 rounded-xl bg-background border border-border">
+                      <span className="font-bold text-foreground block">{tx(c.type)}</span>
+                      <span className="text-[11px] text-muted-foreground leading-snug">{tx(c.desc)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section C: ISC2 Code of Ethics (Strict Priority Order) */}
           <div className="bg-card text-card-foreground border border-border p-6 sm:p-7 rounded-3xl shadow-sm space-y-4">
             <div>
-              <h2 className="text-lg font-bold text-foreground">{tx('1.2 ISC2 Code of Ethics Canons (Strict Priority Order)')}</h2>
+              <h2 className="text-lg font-bold text-foreground">{tx('1.5 ISC2 Code of Ethics Canons (Strict Priority Order)')}</h2>
               <p className="text-xs text-muted-foreground">
-                {tx('Exam Rule: When canons conflict, always resolve in strict numerical order (Canon I overrides Canon II, III, and IV).')}
+                {tx('Exam Rule: When canons conflict, always resolve in strict numerical order (Canon I overrides Canon II, III, and IV). Always disclose Conflicts of Interest.')}
               </p>
             </div>
 
@@ -522,80 +640,6 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
               ))}
             </div>
           </div>
-
-          {/* Section C: Risk Management & Control Matrix */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Risk Management Reference */}
-            <div className="bg-card text-card-foreground border border-border p-6 rounded-3xl shadow-sm space-y-4">
-              <h2 className="text-lg font-bold text-foreground">{tx('1.3 Risk Management & Quantitative Formulas')}</h2>
-              <div className="space-y-2.5 text-xs">
-                <div className="p-3.5 rounded-xl bg-muted/50 border border-border space-y-1">
-                  <span className="font-bold text-foreground block">{tx('Core Risk Equations (Quantitative)')}</span>
-                  <p className="font-mono text-primary font-semibold">{tx('SLE = Asset Value (AV) × Exposure Factor (EF %)')}</p>
-                  <p className="font-mono text-teal-600 dark:text-teal-400 font-semibold">{tx('ALE = Single Loss Expectancy (SLE) × ARO')}</p>
-                  <p className="text-[11px] text-muted-foreground pt-1">
-                    {tx('Inherent Risk − Security Controls = Residual Risk (must be formally accepted by Senior Management).')}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div className="p-3 rounded-xl bg-background border border-border">
-                    <span className="font-bold text-primary block">{tx('1. Risk Mitigation')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Deploying controls (MFA, patching, firewall) to reduce likelihood or impact.')}</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-background border border-border">
-                    <span className="font-bold text-primary block">{tx('2. Risk Transfer')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Shifting financial impact via cyber insurance or SLAs (accountability stays internal).')}</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-background border border-border">
-                    <span className="font-bold text-primary block">{tx('3. Risk Avoidance')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Stopping the risky business activity or decommissioning the vulnerable service entirely.')}</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-background border border-border">
-                    <span className="font-bold text-primary block">{tx('4. Risk Acceptance')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Formally documenting and accepting risk when control cost exceeds potential loss.')}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Security Control Categories & Types */}
-            <div className="bg-card text-card-foreground border border-border p-6 rounded-3xl shadow-sm space-y-4">
-              <h2 className="text-lg font-bold text-foreground">{tx('1.4 Security Control Categories & Types')}</h2>
-              <div className="space-y-3 text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <div className="p-3 rounded-xl bg-muted/50 border border-border">
-                    <span className="font-bold text-primary block">{tx('Administrative')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Policies, AUP, training, background checks, hiring/termination, job rotation.')}</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-muted/50 border border-border">
-                    <span className="font-bold text-primary block">{tx('Technical (Logical)')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Firewalls, encryption, MFA, ACLs, IDS/IPS, antivirus, SIEM.')}</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-muted/50 border border-border">
-                    <span className="font-bold text-primary block">{tx('Physical')}</span>
-                    <span className="text-[11px] text-muted-foreground">{tx('Fences, bollards, locks, mantraps, guards, badges, CCTV, fire suppression.')}</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {[
-                    { type: 'Preventive', desc: 'Stops attack BEFORE it happens (IPS, MFA, Firewall, Mantrap).' },
-                    { type: 'Detective', desc: 'Discovers event DURING/AFTER (IDS, SIEM logs, CCTV, Motion sensor).' },
-                    { type: 'Corrective', desc: 'Restores system AFTER incident (Backups, Patching, Quarantine).' },
-                    { type: 'Deterrent', desc: 'Discourages attackers (Warning signs, Login banners, Lighting).' },
-                    { type: 'Compensating', desc: 'Alternative control when primary is infeasible (VLAN isolation for legacy OS).' },
-                    { type: 'Directive', desc: 'Mandates expected behavior (Policies, Escape route signs).' },
-                  ].map((c, idx) => (
-                    <div key={idx} className="p-2.5 rounded-xl bg-background border border-border">
-                      <span className="font-bold text-foreground block">{tx(c.type)}</span>
-                      <span className="text-[11px] text-muted-foreground leading-snug">{tx(c.desc)}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
@@ -612,8 +656,8 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">{tx('2.1 Governance Hierarchy & Data Roles')}</h2>
-                  <p className="text-xs text-muted-foreground">{tx('Policies, standards, baselines, procedures, guidelines, and enterprise accountability')}</p>
+                  <h2 className="text-lg font-bold text-foreground">{tx('2.1 Plan Governance, Risk & Compliance (GRC) & Data Roles')}</h2>
+                  <p className="text-xs text-muted-foreground">{tx('GRC alignment, policies, standards, baselines, procedures, guidelines, and third-party agreements')}</p>
                 </div>
               </div>
               <span className="text-xs font-bold px-3 py-1 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
@@ -647,12 +691,12 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
               ))}
             </div>
 
-            {/* Roles & Due Care/Diligence */}
+            {/* Roles & Third-Party Agreements */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
               <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
-                <span className="text-xs font-bold text-primary block">{tx('Data Owner vs Data Custodian')}</span>
+                <span className="text-xs font-bold text-primary block">{tx('Data Owner vs Data Custodian vs Steward')}</span>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {tx('Data Owner (Senior business manager) decides classification, access approvals, and retention. Data Custodian (IT/SysAdmin) implements backups, encryption, and ACLs.')}
+                  {tx('Data Owner (Senior business manager) decides classification, access approvals, and retention. Data Custodian (IT/SysAdmin) implements backups, encryption, and ACLs. Data Steward ensures data quality and metadata accuracy.')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
@@ -662,9 +706,9 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
-                <span className="text-xs font-bold text-primary block">{tx('Due Diligence vs Due Care')}</span>
+                <span className="text-xs font-bold text-primary block">{tx('Third-Party Agreements (SLA, ISA, NDA, MOU)')}</span>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {tx('Due Diligence ("Know") = Researching, auditing, and assessing risks beforehand. Due Care ("Do") = Taking prudent action and implementing controls to protect assets.')}
+                  {tx('SLA = Uptime/response metrics & penalties. ISA = Technical security rules for connecting two networks. NDA = Protects confidential info. MOU/MOA = Formal intent between partners.')}
                 </p>
               </div>
             </div>
@@ -673,9 +717,9 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
           {/* Section B: Business Continuity (BCP) & Disaster Recovery (DRP) */}
           <div className="bg-card text-card-foreground border border-border p-6 sm:p-7 rounded-3xl shadow-sm space-y-5">
             <div>
-              <h2 className="text-lg font-bold text-foreground">{tx('2.2 Business Continuity (BCP), BIA & Disaster Recovery (DRP)')}</h2>
+              <h2 className="text-lg font-bold text-foreground">{tx('2.2 Redundancy, Business Continuity (BCP), BIA & Disaster Recovery (DRP)')}</h2>
               <p className="text-xs text-muted-foreground">
-                {tx('BCP keeps overarching business operations running; DRP restores technical IT infrastructure and servers.')}
+                {tx('BCP keeps overarching business operations running; DRP restores technical IT infrastructure, backups, RAID, and recovery sites.')}
               </p>
             </div>
 
@@ -694,9 +738,9 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1">
-                <span className="text-xs font-bold text-primary block">{tx('WRT (Work Recovery Time)')}</span>
+                <span className="text-xs font-bold text-primary block">{tx('WRT & Reliability (MTBF / MTTR)')}</span>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  {tx('Time required AFTER technical restore (RTO) to verify data integrity and catch up on backlog data.')}
+                  {tx('WRT verifies data & backlog after RTO. High Availability requires HIGH MTBF (time between failures) and LOW MTTR (time to repair).')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1">
@@ -707,28 +751,73 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
               </div>
             </div>
 
-            {/* DR Sites & Testing */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-background border border-border space-y-2.5">
-                <span className="text-xs font-bold text-foreground block">{tx('Alternate Recovery Sites (Fastest/Costliest to Slowest/Cheapest)')}</span>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
-                  <li>{tx('1. Mirrored / Active-Active: Live synchronized duplicate site; zero downtime (RTO ≈ 0).')}</li>
-                  <li>{tx('2. Hot Site (Minutes–Hours): Full hardware, connectivity, and near-real-time replicated data ready for immediate failover.')}</li>
-                  <li>{tx('3. Warm Site (Hours–Days): Has racks, network, and servers, but requires loading recent backup tapes/snapshots.')}</li>
-                  <li>{tx('4. Cold Site (Weeks): Empty facility shell with power and HVAC only; no servers or data installed.')}</li>
+            {/* DR Sites, Backups & Testing */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-2">
+                <span className="text-xs font-bold text-foreground block">{tx('Recovery Sites (Fastest to Slowest)')}</span>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>{tx('1. Mirrored / Active-Active: Zero downtime (RTO ≈ 0).')}</li>
+                  <li>{tx('2. Hot Site (Minutes–Hours): Full hardware + live replicated data.')}</li>
+                  <li>{tx('3. Warm Site (Hours–Days): Hardware ready; needs backup restore.')}</li>
+                  <li>{tx('4. Cold Site (Weeks): Power & HVAC shell only; no servers.')}</li>
+                  <li>{tx('5. Reciprocal / Mutual Aid: Partner facility sharing (low cost, high risk).')}</li>
                 </ul>
               </div>
 
-              <div className="p-4 rounded-2xl bg-background border border-border space-y-2.5">
-                <span className="text-xs font-bold text-foreground block">{tx('5 BC/DR Testing Levels & Change Management')}</span>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
-                  <li>{tx('1. Read-Through / Checklist: Managers review plan documents independently.')}</li>
-                  <li>{tx('2. Tabletop / Walkthrough: Team verbally walks through disaster scenarios in a room.')}</li>
-                  <li>{tx('3. Simulation: Role-play drill (evacuation/response) without taking down live IT.')}</li>
-                  <li>{tx('4. Parallel Test: Backup site processes workloads while primary production remains online.')}</li>
-                  <li>{tx('5. Full Interruption: Primary site is powered down; live traffic runs on DR site (highest risk).')}</li>
-                  <li className="pt-1 border-t border-border">{tx('Change Management: RFC → Impact Analysis → Sandbox Test → CAB Approval → Rollback Plan → Deploy.')}</li>
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-2">
+                <span className="text-xs font-bold text-foreground block">{tx('Backups (3-2-1 Rule) & RAID Redundancy')}</span>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>{tx('3-2-1 Rule: 3 copies, 2 media types, 1 offsite/immutable (defeats ransomware).')}</li>
+                  <li>{tx('Differential: Copies all changes since last Full (Restore = Full + Latest Diff).')}</li>
+                  <li>{tx('Incremental: Copies changes since last backup of any type (Fastest backup, slowest restore = Full + ALL Incrementals).')}</li>
+                  <li>{tx('RAID: RAID 0 = Striping (0 fault tolerance!); RAID 1 = Mirroring; RAID 5 = Distributed Parity (min 3 disks).')}</li>
                 </ul>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-2">
+                <span className="text-xs font-bold text-foreground block">{tx('5 BC/DR Testing Levels (Safest to Riskiest)')}</span>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>{tx('1. Read-Through / Checklist: Managers review documents.')}</li>
+                  <li>{tx('2. Tabletop / Walkthrough: Verbal scenario discussion.')}</li>
+                  <li>{tx('3. Simulation: Role-play drill without taking down live IT.')}</li>
+                  <li>{tx('4. Parallel Test: DR site runs workloads while Primary stays online.')}</li>
+                  <li>{tx('5. Full Interruption: Primary powered down; live traffic on DR site.')}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Section C: 2.3 Security Awareness/Culture & 2.4 Measure Cybersecurity Effectiveness */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-card text-card-foreground border border-border p-6 rounded-3xl shadow-sm space-y-3 text-xs">
+              <h2 className="text-lg font-bold text-foreground">{tx('2.3 Security Awareness, Culture & Password Hygiene')}</h2>
+              <div className="p-3.5 rounded-2xl bg-muted/50 border border-border space-y-1.5">
+                <span className="font-bold text-primary block">{tx('Awareness vs Training vs Education & Social Engineering')}</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  {tx('Awareness = All staff ("What"); Training = Job-specific skills ("How"); Education = Career depth ("Why"). Social Engineering: Phishing (mass), Spear Phishing (targeted), Whaling (executives), BEC (wire transfer fraud), Watering Hole (infecting a 3rd-party industry website), Vishing (voice), Smishing (SMS), Pretexting, Baiting (USB), Quid Pro Quo, Typosquatting.')}
+                </p>
+              </div>
+              <div className="p-3.5 rounded-2xl bg-background border border-border space-y-1.5">
+                <span className="font-bold text-primary block">{tx('Password Attacks & Defenses')}</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  {tx('Password Spraying: Trying 1 common password across many usernames to evade account lockout. Credential Stuffing: Replaying leaked username/password pairs from external breaches. Rainbow Tables: Precomputed hash tables—defeated by adding a unique random Salt before hashing.')}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-card text-card-foreground border border-border p-6 rounded-3xl shadow-sm space-y-3 text-xs">
+              <h2 className="text-lg font-bold text-foreground">{tx('2.4 Measure Cybersecurity Effectiveness (KPIs & KRIs)')}</h2>
+              <div className="p-3.5 rounded-2xl bg-muted/50 border border-border space-y-1.5">
+                <span className="font-bold text-primary block">{tx('Key Performance Indicators (KPIs) vs Key Risk Indicators (KRIs)')}</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  {tx('KPIs measure how effectively a security control or process achieves its operational goal (e.g., "99% of critical patches applied within 14 days", "Mean Time to Detect / Respond"). KRIs are forward-looking early-warning metrics indicating that risk exposure is rising (e.g., "spike in unpatched EOL/EOS servers or phishing click rates").')}
+                </p>
+              </div>
+              <div className="p-3.5 rounded-2xl bg-background border border-border space-y-1.5">
+                <span className="font-bold text-primary block">{tx('Executive Dashboards, Scorecards & SMART Metrics')}</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  {tx('Board & Executive Scorecards must translate raw technical data into business risk trends, compliance readiness, and KPI/KRI status relative to Risk Appetite using SMART (Specific, Measurable, Achievable, Relevant, Time-bound) metrics.')}
+                </p>
               </div>
             </div>
           </div>
@@ -747,8 +836,8 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                   <Lock className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">{tx('3.1 Access Control Models & IAM Principles')}</h2>
-                  <p className="text-xs text-muted-foreground">{tx('DAC, MAC, RBAC, ABAC, Rule-Based, Least Privilege, and Separation of Duties')}</p>
+                  <h2 className="text-lg font-bold text-foreground">{tx('3.1–3.2 Identity Lifecycle, Federation, Access Models & Logical Controls')}</h2>
+                  <p className="text-xs text-muted-foreground">{tx('Joiner-Mover-Leaver, SSO/Federation, PAM/JIT, DAC, MAC, RBAC, ABAC, Rule-Based, and Biometrics')}</p>
                 </div>
               </div>
               <span className="text-xs font-bold px-3 py-1 rounded-lg bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
@@ -773,23 +862,29 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
             </div>
 
             {/* Core IAM Principles */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
-                <span className="text-xs font-bold text-foreground block">{tx('Least Privilege & Privilege Creep')}</span>
+                <span className="text-xs font-bold text-foreground block">{tx('Identity Lifecycle & Attestation')}</span>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {tx('Grant only the minimum rights required for the task. When employees change roles (Movers), revoke old rights via Periodic Access Reviews (Attestation) to stop Privilege Creep.')}
+                  {tx('Joiner (Provision) → Mover (Revoke old rights to stop Privilege Creep) → Leaver (Disable immediately). Periodic Access Attestation catches Orphaned (departed owner) & Dormant (inactive 90+ days) accounts.')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
-                <span className="text-xs font-bold text-foreground block">{tx('Separation of Duties vs Dual Control')}</span>
+                <span className="text-xs font-bold text-foreground block">{tx('SSO, Federation & AAA Protocols')}</span>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {tx('Separation of Duties: Different people perform sequential workflow steps (Request vs Approve payment; Code vs Deploy). Dual Control: Two people act simultaneously (two vault keys).')}
+                  {tx('SAML 2.0 (XML SSO AuthN), OAuth 2.0 (API AuthZ tokens), OIDC (JSON AuthN on OAuth). Kerberos (Port 88 tickets). RADIUS (UDP, encrypts password only) vs TACACS+ (TCP 49, encrypts full packet & separates AAA).')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
-                <span className="text-xs font-bold text-foreground block">{tx('Offboarding, PAM & Biometric Errors')}</span>
+                <span className="text-xs font-bold text-foreground block">{tx('PAM, JIT, SoD & Dual Control')}</span>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {tx('Termination: Disable accounts immediately (keep audit logs). Biometrics: Type I (FRR) rejects valid user; Type II (FAR) accepts imposter (worst security risk!); CER/EER = accuracy crossover.')}
+                  {tx('PAM vaults admin credentials & enforces Just-in-Time (JIT) temporary elevation. Service Accounts must disallow interactive human login. Separation of Duties (sequential steps) vs Dual Control (2 people simultaneously).')}
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-1.5">
+                <span className="text-xs font-bold text-foreground block">{tx('MFA, FIDO2 & Biometric Errors')}</span>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {tx('FIDO2/WebAuthn hardware keys offer phishing-resistant MFA. Biometrics: Type I (FRR) rejects valid user; Type II (FAR) accepts imposter (worst security risk!); CER/EER = accuracy crossover where FRR = FAR.')}
                 </p>
               </div>
             </div>
@@ -797,24 +892,24 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
 
           {/* Physical Security & Fire Suppression */}
           <div className="bg-card text-card-foreground border border-border p-6 sm:p-7 rounded-3xl shadow-sm space-y-4">
-            <h2 className="text-lg font-bold text-foreground">{tx('3.2 Physical Security Controls & Fire Suppression')}</h2>
+            <h2 className="text-lg font-bold text-foreground">{tx('3.3 Physical Security Controls, Environmental HVAC & Fire Suppression')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5">
-                <span className="font-bold text-primary block">{tx('Perimeter & Anti-Tailgating')}</span>
+                <span className="font-bold text-primary block">{tx('Perimeter, CPTED & Anti-Tailgating')}</span>
                 <p className="text-muted-foreground leading-relaxed">
-                  {tx('CPTED: Natural surveillance (lighting, low bushes) & access control. Bollards: Stop vehicles. Mantrap (Vestibule) & Turnstiles: Best preventive control against Tailgating (without consent) and Piggybacking (with consent).')}
+                  {tx('CPTED: Natural surveillance (lighting, low bushes), natural access control, territorial reinforcement. Bollards stop vehicles. Mantrap (Vestibule) & Turnstiles block Tailgating (without consent) and Piggybacking (with consent). Faraday Cages block RF/EMI signals.')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5">
-                <span className="font-bold text-primary block">{tx('Fail-Safe vs Fail-Secure Locks')}</span>
+                <span className="font-bold text-primary block">{tx('Locks & Data Center Humidity (40%–60%)')}</span>
                 <p className="text-muted-foreground leading-relaxed">
-                  {tx('Fail-Safe: UNLOCKS automatically when power fails (mandatory for fire exits and human safety). Fail-Secure: STAYS LOCKED when power fails (used for unmanned vaults/IT closets).')}
+                  {tx('Fail-Safe: UNLOCKS when power fails (mandatory for fire exits / human life safety). Fail-Secure: STAYS LOCKED when power fails (IT vaults). Server Room Humidity (40%–60%): <40% causes Static ESD; >60% causes Condensation/Corrosion.')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5">
-                <span className="font-bold text-primary block">{tx('Fire Suppression Classes')}</span>
+                <span className="font-bold text-primary block">{tx('Fire Suppression Classes (A, B, C, D, K)')}</span>
                 <p className="text-muted-foreground leading-relaxed">
-                  {tx('Class A: Wood/Paper (Water). Class B: Flammable liquids. Class C: Electrical/Servers — use Clean Agent Gas (FM-200 / Novec) or Pre-Action Sprinklers (two-stage valve prevents water damage).')}
+                  {tx('Class A: Wood/Paper (Water). Class B: Flammable liquids. Class C: Electrical/Servers — use Clean Agent Gas (FM-200 / Novec 1230) or two-stage Pre-Action Sprinklers (detector valve + melted sprinkler head prevents accidental water damage).')}
                 </p>
               </div>
             </div>
@@ -834,8 +929,8 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                   <Network className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">{tx('4.1 OSI 7-Layer Model, PDUs & Network Hardware')}</h2>
-                  <p className="text-xs text-muted-foreground">{tx('Protocol Data Units, addressing, devices, and layer-specific security controls')}</p>
+                  <h2 className="text-lg font-bold text-foreground">{tx('4.1–4.3 OSI Model, Network Security Architecture, Zero Trust & Cloud Security')}</h2>
+                  <p className="text-xs text-muted-foreground">{tx('Protocol Data Units, addressing, VPNs, Wi-Fi, ICS/IoT, Zero Trust (NIST SP 800-207), and Cloud Shared Responsibility')}</p>
                 </div>
               </div>
               <span className="text-xs font-bold px-3 py-1 rounded-lg bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border border-cyan-500/20">
@@ -850,17 +945,17 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                     <th className="py-2.5 px-4">{tx('OSI Layer')}</th>
                     <th className="py-2.5 px-4">{tx('PDU')}</th>
                     <th className="py-2.5 px-4">{tx('Addressing / Protocols')}</th>
-                    <th className="py-2.5 px-4">{tx('Devices & Security Controls')}</th>
+                    <th className="py-2.5 px-4">{tx('Devices, Attacks & Security Controls')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {[
-                    { layer: 'L7 — Application', pdu: 'Data', proto: 'HTTP, HTTPS, DNS, SSH, SMTP, FTP', dev: 'WAF (Web App Firewall), Application Proxy, CASB' },
-                    { layer: 'L6 — Presentation', pdu: 'Data', proto: 'TLS/SSL Encryption, ASCII, JPEG, Compression', dev: 'TLS Offloaders, Content Inspection' },
-                    { layer: 'L5 — Session', pdu: 'Data', proto: 'NetBIOS, RPC, Session establishment/teardown', dev: 'SOCKS Proxy, Session Gateways' },
-                    { layer: 'L4 — Transport', pdu: 'Segment (TCP) / Datagram (UDP)', proto: 'TCP (3-Way Handshake: SYN, SYN-ACK, ACK) & UDP (Ports)', dev: 'Stateful Firewall, Load Balancer' },
-                    { layer: 'L3 — Network', pdu: 'Packet', proto: 'IPv4 (32-bit), IPv6 (128-bit), ICMP (ping), IPsec', dev: 'Router, Layer-3 Switch, Packet Filter, VPN Concentrator' },
-                    { layer: 'L2 — Data Link', pdu: 'Frame', proto: 'MAC Address (48-bit), Ethernet, ARP, 802.1Q VLAN, 802.11 Wi-Fi', dev: 'Switch, Bridge, Network Interface Card (NIC), 802.1X NAC' },
+                    { layer: 'L7 — Application', pdu: 'Data', proto: 'HTTP, HTTPS, DNS, SSH, SMTP, FTP', dev: 'WAF (blocks SQLi/XSS), Forward/Reverse Proxy, CASB, DNSSEC' },
+                    { layer: 'L6 — Presentation', pdu: 'Data', proto: 'TLS/SSL Encryption, ASCII, JPEG, Compression', dev: 'TLS Inspection, Format Translation' },
+                    { layer: 'L5 — Session', pdu: 'Data', proto: 'NetBIOS, RPC, Session establishment/teardown', dev: 'Session Hijacking Defense, SOCKS Proxy' },
+                    { layer: 'L4 — Transport', pdu: 'Segment (TCP) / Datagram (UDP)', proto: 'TCP (SYN → SYN-ACK → ACK) & UDP (Ports)', dev: 'Stateful Firewall, SYN Cookies (mitigates SYN Flood)' },
+                    { layer: 'L3 — Network', pdu: 'Packet', proto: 'IPv4 (32-bit), IPv6 (128-bit), ICMP (ping), IPsec (ESP/AH)', dev: 'Router, Packet Filter, VPN Concentrator' },
+                    { layer: 'L2 — Data Link', pdu: 'Frame', proto: 'MAC Address (48-bit), Ethernet, ARP, 802.1Q VLAN, 802.11 Wi-Fi', dev: 'Switch, 802.1X NAC, Dynamic ARP Inspection (DAI), DHCP Snooping' },
                     { layer: 'L1 — Physical', pdu: 'Bits (1s & 0s)', proto: 'Fiber, Cat6 Copper, Coax, Radio Frequencies (RF)', dev: 'Hub (repeats to all ports), Repeater, Cable, Faraday Cage' },
                   ].map((row, idx) => (
                     <tr key={idx} className="hover:bg-muted/40">
@@ -874,24 +969,30 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
               </table>
             </div>
 
-            {/* IP Addressing, Defense & Wireless */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* IP Addressing, Zero Trust, OT/IoT & Cloud */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5 text-xs">
-                <span className="font-bold text-primary block">{tx('IP Addressing & Private Ranges (RFC 1918)')}</span>
+                <span className="font-bold text-primary block">{tx('4.1 IP Addressing, VPNs & Wi-Fi')}</span>
                 <p className="text-muted-foreground leading-relaxed">
-                  {tx('Private IPv4: 10.0.0.0/8, 172.16.0.0–172.31.255.255, 192.168.0.0/16 (translated via NAT). Loopback: 127.0.0.1 | APIPA: 169.254.x.x (DHCP server unreachable).')}
+                  {tx('Private IPv4 (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Loopback: 127.0.0.1 | APIPA: 169.254.x.x (DHCP down). VPN: IPsec ESP encrypts (AH does not); Full Tunnel is safer than Split Tunnel. Wi-Fi: Use WPA3-SAE or WPA2-Enterprise (802.1X/RADIUS).')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5 text-xs">
-                <span className="font-bold text-primary block">{tx('IDS vs IPS, DMZ & Wireless')}</span>
+                <span className="font-bold text-primary block">{tx('4.1 Web Attacks & ICS/SCADA/IoT')}</span>
                 <p className="text-muted-foreground leading-relaxed">
-                  {tx('IDS: Passive out-of-band alerting (Detective). IPS: Inline live packet blocking (Preventive). DMZ: Screened subnet for public web/email servers. Wi-Fi: Always use WPA3-SAE or WPA2-Enterprise (802.1X/AES); never use WEP or WPS.')}
+                  {tx('SQLi: Manipulates DB queries (fix: Parameterized Queries/Prepared Statements + WAF). XSS: Injects script in victim browsers (fix: Output Encoding). ICS/SCADA/OT & Embedded IoT: Fragile firmware prioritizing safety/availability—protect via Air-Gap or strict VLAN Segmentation.')}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5 text-xs">
-                <span className="font-bold text-primary block">{tx('Cloud Models & Shared Responsibility')}</span>
+                <span className="font-bold text-primary block">{tx('4.2 Zero Trust & Microsegmentation')}</span>
                 <p className="text-muted-foreground leading-relaxed">
-                  {tx('IaaS: Customer manages OS, Apps, Data. PaaS: Customer manages Code & Data. SaaS: Turnkey software. Rule: Customer is ALWAYS accountable for Data & IAM in every cloud model.')}
+                  {tx('Zero Trust (NIST SP 800-207): "Never Trust, Always Verify" via Policy Engine (PE), Policy Administrator (PA), and Policy Enforcement Point (PEP). DMZ hosts public servers. Microsegmentation blocks lateral East-West server-to-server movement.')}
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5 text-xs">
+                <span className="font-bold text-primary block">{tx('4.3 Cloud Models & Shared Responsibility')}</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  {tx('5 NIST Cloud Traits: On-demand self-service, Broad network access, Resource pooling, Rapid elasticity, Measured service. Models: IaaS, PaaS, SaaS (Public, Private, Hybrid, Community). Customer ALWAYS owns Data & IAM in every cloud model; CASB stops Shadow IT.')}
                 </p>
               </div>
             </div>
@@ -912,8 +1013,8 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                   <AlertTriangle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">{tx('5.1 NIST SP 800-61 Incident Response Lifecycle & Forensics')}</h2>
-                  <p className="text-xs text-muted-foreground">{tx('The 4 official incident response phases, Order of Volatility, and Chain of Custody')}</p>
+                  <h2 className="text-lg font-bold text-foreground">{tx('5.1–5.5 Data Security, Cryptography (PQC), SecOps, IR, Asset Lifecycle & Testing')}</h2>
+                  <p className="text-xs text-muted-foreground">{tx('CSUSAD, Sanitization, Post-Quantum Crypto, Alert Triage, MITRE ATT&CK, NIST IR, EOL/EOS, and Red/Blue/SAST/DAST')}</p>
                 </div>
               </div>
               <span className="text-xs font-bold px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20">
@@ -924,12 +1025,12 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
               {[
                 {
-                  phase: '1. Preparation',
+                  phase: '1. Preparation (NIST IR)',
                   desc: 'Policies, IR playbooks, CSIRT training, SIEM/EDR deployment, and forensic jump-kits BEFORE an incident.',
                 },
                 {
                   phase: '2. Detection & Analysis',
-                  desc: 'Monitoring SIEM alerts, validating Indicators of Compromise (IoCs), triaging severity, and filtering false positives.',
+                  desc: 'Monitoring SIEM alerts, validating IoCs/IoAs, triaging True/False Positives & False Negatives (missed attacks).',
                 },
                 {
                   phase: '3. Containment, Eradication & Recovery',
@@ -937,7 +1038,7 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
                 },
                 {
                   phase: '4. Post-Incident Activity',
-                  desc: 'Conduct blameless Lessons Learned meeting, update SIEM rules/playbooks, and archive forensic evidence.',
+                  desc: 'Conduct blameless Lessons Learned meeting, update SIEM rules/playbooks, and preserve Chain of Custody evidence.',
                 },
               ].map((p, idx) => (
                 <div key={idx} className="p-4 rounded-2xl bg-muted/50 border border-border space-y-1.5">
@@ -947,39 +1048,53 @@ export const ReviewerView: React.FC<ReviewerViewProps> = () => {
               ))}
             </div>
 
-            {/* Forensics, Data Lifecycle, Sanitization & Crypto */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* All 5 Official Domain 5 Subtopics (5.1 to 5.5) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
-                <span className="font-bold text-foreground block">{tx('Digital Forensics & Order of Volatility (Most to Least Volatile)')}</span>
-                <p className="font-mono text-[11px] text-primary">
-                  {tx('1. CPU Registers/Cache → 2. System RAM / Routing & ARP Tables → 3. Swap/Pagefile → 4. Disk (SSD/HDD) → 5. Remote Logs → 6. Offline Backups')}
-                </p>
-                <p className="text-[11px] text-muted-foreground">
-                  {tx('Chain of Custody: Tracks who handled evidence when/where. Hashing (SHA-256): Proves forensic disk image matches original without tampering.')}
-                </p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
-                <span className="font-bold text-foreground block">{tx('Data Lifecycle (CSUSAD) & Media Sanitization (NIST SP 800-88)')}</span>
+                <span className="font-bold text-primary block">{tx('5.1 Data Lifecycle (CSUSAD) & Sanitization')}</span>
                 <p className="font-mono text-[11px] text-teal-600 dark:text-teal-400">
                   {tx('1. Create → 2. Store → 3. Use → 4. Share → 5. Archive → 6. Destroy')}
                 </p>
-                <p className="text-[11px] text-muted-foreground">
-                  {tx('Clearing: Overwriting with 0s/1s (internal reuse). Purging: Degaussing (magnetic HDD/tape ONLY—useless on SSDs!) or Crypto-Shredding (destroy AES keys on SSD/Cloud). Destruction: Shredding/Incineration.')}
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {tx('Tokenization replaces PAN with vault token; Masking hides digits on screen (***-1234). NIST SP 800-88: Clear (overwrite), Purge (Degaussing magnetic HDD/tape ONLY—useless on SSDs! Use Crypto-Shredding on SSD/Cloud), Destroy (shred/incinerate).')}
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
-                <span className="font-bold text-foreground block">{tx('Cryptography & PKI Quick Reference')}</span>
+                <span className="font-bold text-primary block">{tx('5.1 Cryptography, PKI & Post-Quantum (PQC)')}</span>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  {tx('Symmetric (AES): Single shared key; fast bulk encryption (Data at Rest). Asymmetric (RSA, ECC): Public key encrypts; Private key decrypts. Digital Signature: Sender signs hash with Sender’s Private Key; verified with Sender’s Public Key (provides Integrity + Authentication + Non-Repudiation).')}
+                  {tx('Symmetric (AES-256): Fast bulk encryption. Asymmetric (RSA, ECC): Encrypt with Recipient’s PUBLIC Key; Digitally Sign hash with Sender’s PRIVATE Key. PKI checks revocation via CRL (periodic list) or OCSP (real-time). Post-Quantum Cryptography (PQC) replaces RSA/ECC against quantum Shor’s algorithm.')}
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
-                <span className="font-bold text-foreground block">{tx('Malware & Social Engineering Distinctions')}</span>
+                <span className="font-bold text-primary block">{tx('5.2 SecOps, Alert Triage & Threat Frameworks')}</span>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  {tx('Virus vs Worm: Virus needs human action/host file; Worm self-propagates automatically across network. Social Engineering: Phishing (mass email), Spear Phishing (targeted), Whaling (CEO/CFO), Vishing (phone), Smishing (SMS), Pretexting (fake persona), Baiting (infected USB).')}
+                  {tx('SIEM aggregates/correlates logs (requires NTP Port 123 clock sync); SOAR automates playbooks. Triage: False Positive = false alarm (Alert Fatigue); False Negative = missed real attack (most dangerous!). Frameworks: MITRE ATT&CK (adversary TTP matrix) & Cyber Kill Chain.')}
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
+                <span className="font-bold text-primary block">{tx('5.3 Digital Forensics & Evidence Handling')}</span>
+                <p className="font-mono text-[11px] text-primary">
+                  {tx('Volatility: CPU Cache/Reg → RAM/Network → Swap → Disk → Remote Logs → Backups')}
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {tx('Never pull power before capturing RAM! Image drives with a hardware Write-Blocker and verify SHA-256 hashes. Chain of Custody tracks who handled evidence; Legal Hold suspends auto-deletion for litigation.')}
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
+                <span className="font-bold text-primary block">{tx('5.4 Asset Protection: EOL vs EOS & CMDB')}</span>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {tx('CMDB inventories all assets & hardened Golden Image baselines to prevent Configuration Drift. End-of-Life (EOL) = vendor stops selling; End-of-Support (EOS/EOSL) = vendor stops security patches (decommission or isolate with compensating controls).')}
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-background border border-border space-y-2 text-xs">
+                <span className="font-bold text-primary block">{tx('5.5 Security Readiness & App Testing (SAST/DAST)')}</span>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {tx('Red Team = Offensive attackers; Blue Team = SOC defenders; Purple Team = Collaborative Red+Blue tuning; White Team = Referees/RoE. Pen Testing (requires signed Rules of Engagement): Black-Box (0 info), White-Box (full info), Gray-Box (partial). SAST scans static source code; DAST tests running apps.')}
                 </p>
               </div>
             </div>

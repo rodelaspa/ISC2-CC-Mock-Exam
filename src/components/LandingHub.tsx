@@ -23,7 +23,7 @@ import {
   AlertTriangle,
   Zap,
 } from 'lucide-react';
-import { DOMAINS, STANDARD_PER_ITEM_SECONDS, OFFICIAL_PASSING_PERCENT } from '../data/questions';
+import { DOMAINS, QUESTION_BANK, STANDARD_PER_ITEM_SECONDS, OFFICIAL_PASSING_PERCENT } from '../data/questions';
 import { FLASHCARD_DECK } from '../data/flashcards';
 import { ExamSettings, ExamMode, ActiveExamSession, StudyStreak } from '../types/exam';
 import { ResumeSessionBanner } from './ResumeSessionBanner';
@@ -164,7 +164,7 @@ export const LandingHub: React.FC<LandingHubProps> = ({
           {/* Quick Credential Stat Box */}
           <div className="bg-muted/40 p-4 sm:p-5 rounded-2xl shrink-0 flex flex-row lg:flex-col gap-3 sm:gap-4 justify-around border border-border">
             <div className="text-center">
-              <div className="text-2xl font-bold font-mono text-primary">158</div>
+              <div className="text-2xl font-bold font-mono text-primary">{QUESTION_BANK.length}</div>
               <div className="text-[11px] text-muted-foreground uppercase font-medium">{t('hub.statQuestions')}</div>
             </div>
             <div className="w-px h-auto lg:w-full lg:h-px bg-border" />
